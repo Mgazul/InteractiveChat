@@ -72,10 +72,6 @@
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<relocations>
 								<relocation>
-									<pattern>com.loohp.platformscheduler</pattern>
-									<shadedPattern>com.loohp.interactivechat.libs.com.loohp.platformscheduler</shadedPattern>
-								</relocation>
-								<relocation>
 									<pattern>net.kyori</pattern>
 									<shadedPattern>com.loohp.interactivechat.libs.net.kyori</shadedPattern>
 								</relocation>
@@ -322,12 +318,6 @@
 	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.loohp</groupId>
-			<artifactId>PlatformScheduler</artifactId>
-			<version>1.0.0</version>
-			<scope>compile</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.github.Carleslc.Simple-YAML</groupId>
 			<artifactId>Simple-Yaml</artifactId>

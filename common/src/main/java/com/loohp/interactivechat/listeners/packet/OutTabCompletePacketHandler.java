@@ -28,9 +28,9 @@ import com.loohp.interactivechat.utils.ChatColorUtils;
 import com.loohp.interactivechat.utils.ComponentStyling;
 import com.loohp.interactivechat.utils.PlaceholderParser;
 import com.loohp.interactivechat.utils.PlayerUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -49,13 +49,13 @@ public class OutTabCompletePacketHandler {
     }
 
     private static void schedulePlayerNamesUpdate() {
-        Scheduler.runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
             if (InteractiveChat.useTooltipOnTab) {
                 Map<String, UUID> names = new HashMap<>();
                 for (ICPlayer player : ICPlayerFactory.getOnlineICPlayers()) {
                     addPlayerNames(names, player);
                 }
-                Scheduler.runTask(InteractiveChat.plugin, () -> playerNames.set(names));
+                Bukkit.getScheduler().runTask(InteractiveChat.plugin, () -> playerNames.set(names));
             }
         }, 0, 100);
     }

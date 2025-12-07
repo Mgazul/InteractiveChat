@@ -24,7 +24,6 @@ import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.api.InteractiveChatAPI;
 import com.loohp.interactivechat.objectholders.ICPlayer;
 import com.loohp.interactivechat.objectholders.ICPlayerFactory;
-import com.loohp.platformscheduler.Scheduler;
 import com.willfp.eco.core.display.Display;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -68,10 +67,10 @@ public class EcoHook {
     }
 
     public static Future<ItemStack> setEcoLore(ItemStack itemStack, Player player) {
-        if (!InteractiveChat.ecoSetLoreOnMainThread || Scheduler.isPrimaryThread()) {
+        if (!InteractiveChat.ecoSetLoreOnMainThread || Bukkit.isPrimaryThread()) {
             return CompletableFuture.completedFuture(setEcoLore0(itemStack.clone(), player));
         } else {
-            return Scheduler.callSyncMethod(InteractiveChat.plugin, () -> setEcoLore0(itemStack.clone(), player), player);
+            return Bukkit.getScheduler().callSyncMethod(InteractiveChat.plugin, () -> setEcoLore0(itemStack.clone(), player));
         }
     }
 

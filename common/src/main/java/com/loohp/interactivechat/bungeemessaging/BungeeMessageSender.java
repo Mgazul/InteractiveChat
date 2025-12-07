@@ -36,7 +36,6 @@ import com.loohp.interactivechat.objectholders.ValueTrios;
 import com.loohp.interactivechat.utils.CustomArrayUtils;
 import com.loohp.interactivechat.utils.DataTypeIO;
 import com.loohp.interactivechat.utils.HashUtils;
-import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -68,7 +67,7 @@ public class BungeeMessageSender {
     static {
         Cache<UUID, ValuePairs<UUID, String>> authorizedCommandsCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
         authorizedCommands = authorizedCommandsCache.asMap();
-        Scheduler.runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
             int size = sent.size();
             for (int i = size; i > 500; i--) {
                 sent.remove(sent.firstKey());

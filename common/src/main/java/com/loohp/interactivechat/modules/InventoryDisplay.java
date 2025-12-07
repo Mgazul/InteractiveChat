@@ -41,7 +41,6 @@ import com.loohp.interactivechat.utils.MCVersion;
 import com.loohp.interactivechat.utils.PlaceholderParser;
 import com.loohp.interactivechat.utils.PlayerUtils;
 import com.loohp.interactivechat.utils.SkinUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -194,7 +193,7 @@ public class InventoryDisplay {
         inv = event.getInventory();
 
         Inventory finalRef = inv;
-        Scheduler.runTaskAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(InteractiveChat.plugin, () -> {
             ItemStack skull = SkinUtils.getSkull(player.getUniqueId());
             ItemMeta meta = skull.getItemMeta();
             String name = ChatColorUtils.translateAlternateColorCodes('&', PlaceholderParser.parse(player, InteractiveChat.invSkullName));
@@ -304,7 +303,7 @@ public class InventoryDisplay {
         inv2 = event2.getInventory();
 
         Inventory finalRef = inv;
-        Scheduler.runTaskAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(InteractiveChat.plugin, () -> {
             ItemStack skull = SkinUtils.getSkull(player.getUniqueId());
             ItemMeta meta = skull.getItemMeta();
             String name = ChatColorUtils.translateAlternateColorCodes('&', PlaceholderParser.parse(player, InteractiveChat.invSkullName));

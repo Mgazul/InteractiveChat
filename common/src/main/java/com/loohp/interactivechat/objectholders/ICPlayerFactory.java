@@ -27,7 +27,6 @@ import com.loohp.interactivechat.api.events.OfflineICPlayerCreationEvent;
 import com.loohp.interactivechat.api.events.OfflineICPlayerUpdateEvent;
 import com.loohp.interactivechat.nms.NMS;
 import com.loohp.interactivechat.utils.InventoryUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.craftersland.data.bridge.PD;
 import net.craftersland.data.bridge.objects.DatabaseEnderchestData;
 import net.craftersland.data.bridge.objects.DatabaseExperienceData;
@@ -104,7 +103,7 @@ public class ICPlayerFactory {
             }
         }, InteractiveChat.plugin);
 
-        Scheduler.runTaskTimerAsynchronously(InteractiveChat.plugin, () -> REFERENCED_OFFLINE_PLAYERS.values().removeIf(each -> each.get() == null), 12000, 12000);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(InteractiveChat.plugin, () -> REFERENCED_OFFLINE_PLAYERS.values().removeIf(each -> each.get() == null), 12000, 12000);
     }
 
     public static RemotePlayerCreateResult createOrUpdateRemoteICPlayer(String server, String name, UUID uuid, boolean rightHanded, int selectedSlot, int experienceLevel, Inventory inventory, Inventory enderchest, boolean vanished) {

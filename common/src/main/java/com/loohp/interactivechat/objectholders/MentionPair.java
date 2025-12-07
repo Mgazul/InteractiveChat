@@ -21,17 +21,17 @@
 package com.loohp.interactivechat.objectholders;
 
 import com.loohp.interactivechat.InteractiveChat;
-import com.loohp.platformscheduler.ScheduledTask;
-import com.loohp.platformscheduler.Scheduler;
 
 import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 
 public class MentionPair {
 
     private final UUID sender;
     private final UUID receiver;
     private final long timestamp;
-    private final ScheduledTask task;
+    private final BukkitTask task;
 
     public MentionPair(UUID sender, UUID reciever) {
         this.sender = sender;
@@ -53,8 +53,8 @@ public class MentionPair {
         InteractiveChat.mentionPair.remove(this);
     }
 
-    private ScheduledTask run() {
-        return Scheduler.runTaskTimer(InteractiveChat.plugin, () -> {
+    private BukkitTask run() {
+        return Bukkit.getScheduler().runTaskTimer(InteractiveChat.plugin, () -> {
             if ((System.currentTimeMillis() - timestamp) > 3000) {
                 task.cancel();
                 InteractiveChat.mentionPair.remove(this);

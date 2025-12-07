@@ -22,7 +22,6 @@ package com.loohp.interactivechat.objectholders;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.loohp.interactivechat.InteractiveChat;
-import com.loohp.platformscheduler.ScheduledTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -44,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.LongSupplier;
+import org.bukkit.scheduler.BukkitTask;
 
 public abstract class AsyncChatSendingExecutor implements AutoCloseable {
 
@@ -63,7 +63,7 @@ public abstract class AsyncChatSendingExecutor implements AutoCloseable {
     public final Map<UUID, Map<UUID, OutboundPacket>> waitingPackets;
     private final Map<UUID, Long> lastSuccessfulCheck;
 
-    private final List<ScheduledTask> tasks;
+    private final List<BukkitTask> tasks;
     private final AtomicBoolean isValid;
     private volatile long lastCleanupTime;
 
@@ -144,7 +144,7 @@ public abstract class AsyncChatSendingExecutor implements AutoCloseable {
     @Override
     public synchronized void close() throws Exception {
         isValid.set(false);
-        for (ScheduledTask task : tasks) {
+        for (BukkitTask task : tasks) {
             if (!task.isCancelled()) {
                 task.cancel();
             }
@@ -265,7 +265,7 @@ public abstract class AsyncChatSendingExecutor implements AutoCloseable {
         }, "InteractiveChat Async ChatPacket Ordered Sending Thread").start();
     }
 
-    public abstract ScheduledTask packetSender();
+    public abstract BukkitTask packetSender();
 
     private void monitor() {
         new Thread(() -> {

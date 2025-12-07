@@ -21,7 +21,7 @@
 package com.loohp.interactivechat.api.events;
 
 import com.loohp.interactivechat.objectholders.OfflineICPlayer;
-import com.loohp.platformscheduler.Scheduler;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -41,7 +41,7 @@ public class OfflineICPlayerEvent extends Event {
     protected final OfflineICPlayer player;
 
     public OfflineICPlayerEvent(OfflineICPlayer player) {
-        super(!Scheduler.isPrimaryThread());
+        super(!Bukkit.isPrimaryThread());
         this.player = player;
     }
 

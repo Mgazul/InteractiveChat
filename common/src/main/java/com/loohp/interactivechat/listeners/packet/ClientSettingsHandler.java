@@ -23,7 +23,7 @@ package com.loohp.interactivechat.listeners.packet;
 import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.config.ConfigManager;
 import com.loohp.interactivechat.utils.ChatColorUtils;
-import com.loohp.platformscheduler.Scheduler;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -50,8 +50,8 @@ public class ClientSettingsHandler {
     }
 
     private static void sendMessageLater(Player player, String message) {
-        Scheduler.runTaskLater(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(InteractiveChat.plugin, () -> {
             player.sendMessage(ChatColorUtils.translateAlternateColorCodes('&', message));
-        }, 5, player);
+        }, 5);
     }
 }

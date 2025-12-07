@@ -24,10 +24,10 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.objectholders.AsyncChatSendingExecutor;
 import com.loohp.interactivechat.objectholders.OutboundPacket;
-import com.loohp.platformscheduler.ScheduledTask;
-import com.loohp.platformscheduler.Scheduler;
 
 import java.util.function.LongSupplier;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 
 public class ProtocolLibAsyncChatSendingExecutor extends AsyncChatSendingExecutor {
 
@@ -36,8 +36,8 @@ public class ProtocolLibAsyncChatSendingExecutor extends AsyncChatSendingExecuto
     }
 
     @Override
-    public ScheduledTask packetSender() {
-        return Scheduler.runTaskTimer(InteractiveChat.plugin, () -> {
+    public BukkitTask packetSender() {
+        return Bukkit.getScheduler().runTaskTimer(InteractiveChat.plugin, () -> {
             while (!sendingQueue.isEmpty()) {
                 OutboundPacket out = sendingQueue.poll();
                 try {

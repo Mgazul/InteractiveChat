@@ -28,7 +28,7 @@ import com.comphenix.protocol.wrappers.WrappedServerPing;
 import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.platform.protocollib.ProtocolLibPlatform;
 import com.loohp.interactivechat.registry.Registry;
-import com.loohp.platformscheduler.Scheduler;
+import org.bukkit.Bukkit;
 
 import static com.loohp.interactivechat.bungeemessaging.ServerPingListenerUtils.REQUESTS;
 import static com.loohp.interactivechat.bungeemessaging.ServerPingListenerUtils.json;
@@ -58,7 +58,7 @@ public class ServerPingListener {
             }
         });
 
-        Scheduler.runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
             REQUESTS.entrySet().removeIf(entry -> System.currentTimeMillis() > entry.getValue());
         }, 0, 20);
     }

@@ -43,7 +43,6 @@ import com.loohp.interactivechat.utils.MCVersion;
 import com.loohp.interactivechat.utils.PlaceholderParser;
 import com.loohp.interactivechat.utils.PlayerUtils;
 import com.loohp.interactivechat.utils.RarityUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -306,7 +305,7 @@ public class ProcessExternalMessage {
         if (InteractiveChat.allowMention && sender.isPresent()) {
             PlayerData data = InteractiveChat.playerDataManager.getPlayerData(receiver);
             if (data == null || !data.isMentionDisabled()) {
-                component = MentionDisplay.process(component, receiver, sender.get(), unix, !Scheduler.isPrimaryThread());
+                component = MentionDisplay.process(component, receiver, sender.get(), unix, !Bukkit.isPrimaryThread());
             }
         }
         component = ComponentReplacing.replace(component, Registry.MENTION_TAG_CONVERTER.getReversePattern().pattern(), true, (result, components) -> {
@@ -341,14 +340,14 @@ public class ProcessExternalMessage {
             }
         }
 
-        Scheduler.runTaskLater(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(InteractiveChat.plugin, () -> {
             InteractiveChat.keyTime.remove(rawMessageKey);
             InteractiveChat.keyPlayer.remove(rawMessageKey);
         }, 5);
 
         String newJson = InteractiveChatComponentSerializer.gson().serialize(component);
 
-        PreExternalResponseSendEvent event = new PreExternalResponseSendEvent(!Scheduler.isPrimaryThread(), receiver, component, sender.map(each -> each.getUniqueId()).orElse(null), originalComponent, InteractiveChat.sendOriginalIfTooLong);
+        PreExternalResponseSendEvent event = new PreExternalResponseSendEvent(!Bukkit.isPrimaryThread(), receiver, component, sender.map(each -> each.getUniqueId()).orElse(null), originalComponent, InteractiveChat.sendOriginalIfTooLong);
         Bukkit.getPluginManager().callEvent(event);
 
         if (event.isSendOriginalIfCancelled() && newJson.length() > InteractiveChat.packetStringMaxLength) {

@@ -26,7 +26,6 @@ import com.loohp.interactivechat.objectholders.ICPlayer;
 import com.loohp.interactivechat.objectholders.ICPlayerFactory;
 import com.loohp.interactivechat.objectholders.OfflineICPlayer;
 import com.loohp.interactivechat.objectholders.ValuePairs;
-import com.loohp.platformscheduler.Scheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -48,7 +47,7 @@ public class PlaceholderParser {
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("[%]([^%]+)[%]");
 
     static {
-        Scheduler.runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(InteractiveChat.plugin, () -> {
             if (InteractiveChat.bungeecordMode) {
                 if (InteractiveChat.useTooltipOnTab) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -60,13 +59,13 @@ public class PlaceholderParser {
     }
 
     public static String parse(OfflineICPlayer offlineICPlayer, String str) {
-        if (InteractiveChat.parsePAPIOnMainThread && !Scheduler.isPrimaryThread()) {
+        if (InteractiveChat.parsePAPIOnMainThread && !Bukkit.isPrimaryThread()) {
             try {
                 CompletableFuture<String> future = new CompletableFuture<>();
                 if (offlineICPlayer.isOnline() && offlineICPlayer.getPlayer().isLocal()) {
-                    Scheduler.runTask(InteractiveChat.plugin, () -> future.complete(parse0(offlineICPlayer, str)), offlineICPlayer.getPlayer().getLocalPlayer());
+                    Bukkit.getScheduler().runTask(InteractiveChat.plugin, () -> future.complete(parse0(offlineICPlayer, str)));
                 } else {
-                    Scheduler.runTask(InteractiveChat.plugin, () -> future.complete(parse0(offlineICPlayer, str)));
+                    Bukkit.getScheduler().runTask(InteractiveChat.plugin, () -> future.complete(parse0(offlineICPlayer, str)));
                 }
                 return future.get(1500, TimeUnit.MILLISECONDS);
             } catch (InterruptedException | ExecutionException e) {

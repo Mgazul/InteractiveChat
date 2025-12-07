@@ -23,8 +23,8 @@ package com.loohp.interactivechat.listeners.packet;
 import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.utils.ModernChatSigningUtils;
 import com.loohp.interactivechat.utils.PlayerUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.ExecutionException;
@@ -36,12 +36,12 @@ import java.util.concurrent.ExecutionException;
 public class RedispatchedSignPacketHandler {
 
     public static void redispatchCommand(Player player, String command) {
-        Scheduler.runTask(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTask(InteractiveChat.plugin, () -> {
             PlayerUtils.dispatchCommandAsPlayer(player, command);
             if (!InteractiveChat.skipDetectSpamRateWhenDispatchingUnsignedPackets) {
                 ModernChatSigningUtils.detectRateSpam(player, command);
             }
-        }, player);
+        });
     }
 
     /**
@@ -51,12 +51,12 @@ public class RedispatchedSignPacketHandler {
      */
     public static void redispatchChatMessage(Player player, String message) {
         if (player.isConversing()) {
-            Scheduler.runTask(InteractiveChat.plugin, () -> player.acceptConversationInput(message), player);
+            Bukkit.getScheduler().runTask(InteractiveChat.plugin, () -> player.acceptConversationInput(message));
             if (!InteractiveChat.skipDetectSpamRateWhenDispatchingUnsignedPackets) {
-                Scheduler.runTaskAsynchronously(InteractiveChat.plugin, () -> ModernChatSigningUtils.detectRateSpam(player, message));
+                Bukkit.getScheduler().runTaskAsynchronously(InteractiveChat.plugin, () -> ModernChatSigningUtils.detectRateSpam(player, message));
             }
         } else {
-            Scheduler.runTaskAsynchronously(InteractiveChat.plugin, () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(InteractiveChat.plugin, () -> {
                 try {
                     Object decorated = ModernChatSigningUtils.getChatDecorator(player, LegacyComponentSerializer.legacySection().deserialize(message)).get();
                     PlayerUtils.chatAsPlayer(player, message, decorated);

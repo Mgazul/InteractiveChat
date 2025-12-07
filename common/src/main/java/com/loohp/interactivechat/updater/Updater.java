@@ -22,7 +22,6 @@ package com.loohp.interactivechat.updater;
 
 import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.utils.HTTPRequestUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -99,7 +98,7 @@ public class Updater implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        Scheduler.runTaskLaterAsynchronously(InteractiveChat.plugin, () -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(InteractiveChat.plugin, () -> {
             if (InteractiveChat.updaterEnabled) {
                 Player player = event.getPlayer();
                 if (player.hasPermission("interactivechat.update")) {

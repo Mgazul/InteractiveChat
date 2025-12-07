@@ -21,7 +21,6 @@
 package com.loohp.interactivechat.hooks.dynmap;
 
 import com.loohp.interactivechat.InteractiveChat;
-import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -67,7 +66,7 @@ public class DynmapListener implements Listener {
     public void onPluginEnable(PluginEnableEvent event) {
         if (init) {
             if (event.getPlugin().getName().equalsIgnoreCase("dynmap")) {
-                Scheduler.runTaskLater(InteractiveChat.plugin, () -> {
+                Bukkit.getScheduler().runTaskLater(InteractiveChat.plugin, () -> {
                     _init_();
                     Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "[InteractiveChat] InteractiveChat has injected into Dynmap!");
                 }, 100);

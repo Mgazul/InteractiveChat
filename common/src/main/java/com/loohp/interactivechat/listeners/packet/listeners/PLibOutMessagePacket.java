@@ -66,7 +66,6 @@ import com.loohp.interactivechat.utils.MCVersion;
 import com.loohp.interactivechat.utils.ModernChatSigningUtils;
 import com.loohp.interactivechat.utils.PlayerUtils;
 import com.loohp.interactivechat.utils.WrappedChatComponentUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -635,7 +634,7 @@ public class PLibOutMessagePacket {
 
             if (sender.isPresent() && !sender.get().isLocal()) {
                 if (isFiltered) {
-                    Scheduler.runTaskLaterAsynchronously(InteractiveChat.plugin, () -> {
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(InteractiveChat.plugin, () -> {
                         SERVICE.execute(() -> {
                             processPacket(receiver, determinedSender, packet, messageUUID, false, packetHandler);
                         }, receiver, messageUUID);
@@ -653,7 +652,7 @@ public class PLibOutMessagePacket {
             component = ComponentReplacing.replace(component, Registry.ID_PATTERN.pattern(), Registry.ID_PATTERN_REPLACEMENT);
 
             UUID preEventSenderUUID = sender.map(ICPlayer::getUniqueId).orElse(null);
-            PrePacketComponentProcessEvent preEvent = new PrePacketComponentProcessEvent(!Scheduler.isPrimaryThread(), receiver, component, preEventSenderUUID);
+            PrePacketComponentProcessEvent preEvent = new PrePacketComponentProcessEvent(!Bukkit.isPrimaryThread(), receiver, component, preEventSenderUUID);
             Bukkit.getPluginManager().callEvent(preEvent);
             if (preEvent.getSender() != null) {
                 Player newsender = Bukkit.getPlayer(preEvent.getSender());
@@ -731,7 +730,7 @@ public class PLibOutMessagePacket {
             PreChatPacketSendEvent sendEvent = new PreChatPacketSendEvent(true, receiver, packet, component, postEventSenderUUID, originalPacket, InteractiveChat.sendOriginalIfTooLong, longerThanMaxLength);
             Bukkit.getPluginManager().callEvent(sendEvent);
 
-            Scheduler.runTaskLater(InteractiveChat.plugin, () -> {
+            Bukkit.getScheduler().runTaskLater(InteractiveChat.plugin, () -> {
                 InteractiveChat.keyTime.remove(rawMessageKey);
                 InteractiveChat.keyPlayer.remove(rawMessageKey);
             }, 10);

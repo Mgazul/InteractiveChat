@@ -22,21 +22,21 @@ package com.loohp.interactivechat.utils.bossbar;
 
 import com.loohp.interactivechat.InteractiveChat;
 import com.loohp.interactivechat.utils.MCVersion;
-import com.loohp.platformscheduler.ScheduledRunnable;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Flag;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class BossBarUpdater implements BossBar.Listener, AutoCloseable {
 
     public static void countdownBossBar(BossBarUpdater updater, int ticks, int removeDelay) {
-        new ScheduledRunnable() {
+        new BukkitRunnable() {
             int tick = 0;
 
             @Override
@@ -47,7 +47,7 @@ public abstract class BossBarUpdater implements BossBar.Listener, AutoCloseable 
                 bossbar.progress(Math.max(current, 0));
                 if (current < 0) {
                     this.cancel();
-                    Scheduler.runTaskLaterAsynchronously(InteractiveChat.plugin, () -> updater.close(), removeDelay);
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(InteractiveChat.plugin, () -> updater.close(), removeDelay);
                 }
             }
         }.runTaskTimerAsynchronously(InteractiveChat.plugin, 0, 1);

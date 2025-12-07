@@ -31,7 +31,6 @@ import com.loohp.interactivechat.utils.ComponentCompacting;
 import com.loohp.interactivechat.utils.ComponentFlattening;
 import com.loohp.interactivechat.utils.InteractiveChatComponentSerializer;
 import com.loohp.interactivechat.utils.PlayerUtils;
-import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -166,7 +165,7 @@ public class BedrockHook implements Listener {
         } else {
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
-                Scheduler.runTask(InteractiveChat.plugin, () -> PlayerUtils.dispatchCommandAsPlayer(player, command), player);
+                Bukkit.getScheduler().runTask(InteractiveChat.plugin, () -> PlayerUtils.dispatchCommandAsPlayer(player, command));
             }
         }
     }
